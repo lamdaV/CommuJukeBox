@@ -1,44 +1,48 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# CommuJukeBox
+The Community Jukebox
 
-## Available Scripts
 
-In the project directory, you can run:
+## Description
+Build a community video playlist. Currently set up to be integrated with Slack; however, for other messaging platform,
+an endpoint `/api/{platform}` needs to be implemented with proper validation and pass the video link to play and a way to uniquely
+identify the user who requested it.
 
-### `npm start`
+Using a messenging platform like Slack, a user can send a video link to the backend service which will be routed to a central consumer
+for broadcasting on a larger screen.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Features
+- [x] Slack Integration
+- [x] User Request Throttling (5 minutes)
+- [x] Administrative Queueing Endpoint to bypass Throttling
+- [x] Validate Youtube videos
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Setup
+1. Clone the repo: `git clone {}`
+2. Change into the repo directory: `cd commujukebox`
+3. Install dependencies: `yarn install` or `npm install`
+4. Create Slack workspace or use an existing one
+5. Create a Slack [app](https://api.slack.com/apps)
+6. Create .env file with values filled out:
+```
+NODE_ENV=production  # state of deployment
+HOST=localhost  # host of api server
+SERVER_PORT=8080  # port of api server
+PRIVILEDGED_USER=changeme   # just a specific username for the administrative user
+PRIVILEDGED_TOKEN=changeme  # secret used to authenticate administrative endpoint
 
-### `npm run build`
+SLACK_VERSION=v0  # slack schema version used to verify requests
+SLACK_VERIFICATION_SECRET=changeme  # slack verification secret used to verify requests
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+REACT_APP_IO_HOST=localhost  # socket.io host for frontend to connect to
+REACT_APP_IO_PORT=8081  # socket.io port for frontend to connext to
+```
+7. Build frontend: `yarn build`
+8. Start server: `yarn serve`
+9. Install [ngrok](https://ngrok.com/)
+10. Start ngrok in separate terminal window: `ngrok http {SERVER_PORT}` (SERVER_PORT from .env)
+11. Create a Slack `Slash commands` and point it to the provided ngrok tunnel endpoint and append `/api/slack`
+12. In a different tab or window, go to `localhost:{SERVER_PORT}` and you should see a simplistic frontend
+13. Return to Slack and type the Slash command you created with a Youtube link: `/play youtube.com/watch?v={videoId}`
+14. A video should start playing `localhost:{SERVER_PORT}`
