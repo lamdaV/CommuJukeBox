@@ -13,14 +13,15 @@ for broadcasting on a larger screen.
 
 ## Features
 - [x] Slack Integration
+- [ ] Other chat integration (Pull Requests are welcome)
 - [x] User Request Throttling (5 minutes)
 - [x] Administrative Queueing Endpoint to bypass Throttling
 - [x] Validate Youtube videos
 
 
 ## Setup
-1. Clone the repo: `git clone {}`
-2. Change into the repo directory: `cd commujukebox`
+1. Clone the repo: `git clone https://github.com/lamdaV/CommuJukeBox.git`
+2. Change into the repo directory: `cd CommuJukeBox`
 3. Install dependencies: `yarn install` or `npm install`
 4. Create Slack workspace or use an existing one
 5. Create a Slack [app](https://api.slack.com/apps)
@@ -46,3 +47,13 @@ REACT_APP_IO_PORT=8081  # socket.io port for frontend to connext to
 12. In a different tab or window, go to `localhost:{SERVER_PORT}` and you should see a simplistic frontend
 13. Return to Slack and type the Slash command you created with a Youtube link: `/play youtube.com/watch?v={videoId}`
 14. A video should start playing `localhost:{SERVER_PORT}`
+
+
+## Contributing
+Want to add support for other chat applications? Create an endpoint `/api/{chatApplicationName}` and handle any verification
+process possible for that chat application. 
+
+Want to add support for videos other than YouTube? Improve the existing URL verification to support other videos or improve 
+the existing YouTube url verification.
+
+Any features or improvements are welcome!
